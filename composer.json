@@ -33,7 +33,7 @@
     "autoload": {
         "psr-4": {
             "viget\\generator\\": "src/",
-            "vigetgenerator\\fixtures\\": "tests/fixtures/"
+            "vigetgeneratortests\\fixtures\\": "tests/fixtures/"
         }
     },
     "minimum-stability": "dev",
