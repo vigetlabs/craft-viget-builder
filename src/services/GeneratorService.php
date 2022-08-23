@@ -3,18 +3,20 @@
 namespace viget\generator\services;
 
 use Craft;
-use craft\helpers\StringHelper;
-use craft\models\Section;
-use craft\models\Section_SiteSettings;
 use craft\models\Site;
 use Exception;
 use Throwable;
 use viget\generator\helpers\GenerateHelper;
+use viget\generator\helpers\SectionHelper;
 use viget\generator\models\GeneratorConfig;
 use viget\generator\models\SectionConfig;
+use yii\base\BaseObject;
 
-class GeneratorService
+class GeneratorService extends BaseObject
 {
+
+    public bool $saveSections = false;
+
     /**
      * @param Site $primarySite
      * @throws Throwable
@@ -24,74 +26,53 @@ class GeneratorService
         GeneratorConfig $generatorConfig,
     ): void
     {
-        $primarySite = Craft::$app->getSites()->getPrimarySite();
-        
-        $handle = $config->handle ?? StringHelper::camelCase($config->name);
-        $slug = StringHelper::slugify($config->name);
-        $uriFormat = $slug;
-        
-        if ($config->type === Section::TYPE_CHANNEL || $config->type === SECTION::TYPE_STRUCTURE) {
-            $uriFormat = $slug . '/{slug}';
+        $db = Craft::$app->db;
+        $transaction = $db->beginTransaction();
+
+        if (!$transaction) {
+            throw new \yii\db\Exception('Could not acquire DB transaction');
         }
-        
-        // Override auto URI format if passed as option
-        if ($config->uriFormat !== null || $config->template === false) {
-            $uriFormat = $config->uriFormat;
-        }
-        
-        $hasUriFormat = (bool)$uriFormat;
-        $hasUrls = $hasUriFormat;
-        $templatePath = $config->template && $hasUrls ? "_elements/{$slug}.twig" : null;
-        
-        $section = new Section([
-            'name' => $config->name,
-            'handle' => $handle,
-            'type' => $config->type,
-            'siteSettings' => [
-                new Section_SiteSettings([
-                    'siteId' => $primarySite->id,
-                    'enabledByDefault' => true,
-                    'hasUrls' => $hasUrls,
-                    'uriFormat' => $hasUriFormat ? $uriFormat : null,
-                    'template' => $templatePath,
-                ]),
-            ]
-        ]);
-        
-        $success = false;
-        
+
         try {
-            $success = Craft::$app->sections->saveSection($section);
+            $section = SectionHelper::createSection($config);
+            $sectionSiteSettings = array_values($section->siteSettings)[0];
+
+            if ($this->saveSections) {
+                $success = Craft::$app->sections->saveSection($section);
+
+                if (!$success) {
+                    // TODO how would you handle this?
+                    print_r($section->getErrors());
+                    throw new Exception("Couldn't save section");
+                }
+                $defaultEntryType = $section->getEntryTypes()[0];
+                $defaultEntryType->hasTitleField = true;
+
+                $success = Craft::$app->sections->saveEntryType($defaultEntryType);
+
+                if (!$success) {
+                    print_r($defaultEntryType->getErrors());
+                    throw new Exception("Couldn't save entry type");
+                }
+            }
+
+            if ($config->hasUrls) {
+                $templateContent = GenerateHelper::renderTemplate(
+                    Craft::getAlias('@viget/generator/templates/_scaffold/template.twig'),
+                    [
+                        'layout' => $generatorConfig->layout,
+                    ]
+                );
+
+                GenerateHelper::writeToUsersTemplateDirectory(
+                    $sectionSiteSettings->template,
+                    $templateContent
+                );
+            }
+            $transaction->commit();
         } catch (Exception $e) {
+            $transaction->rollBack();
             throw $e;
-        }
-        
-        if (!$success) {
-            // TODO how would you handle this?
-            print_r($section->getErrors());
-            throw new Exception("Couldn't save section");
-        }
-        
-        $defaultEntryType = $section->getEntryTypes()[0];
-        
-        $defaultEntryType->hasTitleField = true;
-        
-        $success = Craft::$app->sections->saveEntryType($defaultEntryType);
-        
-        if (!$success) {
-            print_r($defaultEntryType->getErrors());
-            throw new Exception("Couldn't save entry type");
-        }
-        
-        if ($templatePath) {
-            $templateContent = GenerateHelper::renderTemplate(
-                $config->templatePath,
-                [
-                    'layout' => $generatorConfig->layout,
-                ]
-            );
-            
-            GenerateHelper::writeToUsersTemplateDirectory($templatePath, $templateContent);
         }
     }
 }

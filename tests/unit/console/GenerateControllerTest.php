@@ -1,48 +1,35 @@
 <?php
+
 namespace vigetbasetests\unit\console;
 
 use Craft;
 use craft\helpers\FileHelper;
 use craft\test\console\ConsoleTest;
-use viget\base\Module;
+use viget\generator\Module;
+use viget\generator\services\GeneratorService;
 use yii\base\InvalidConfigException;
 use yii\console\ExitCode;
 
 class GenerateControllerTest extends ConsoleTest
 {
-    private $siteTemplatesPath;
-    private $templatesRoot;
-    private $partialsRoot;
-    private $partsKitRoot;
-
-    // public function _fixtures(): array
-    // {
-    //     return [
-    //         'entryTypes' => [
-    //             'class' => EntryTypesFixture::class,
-    //         ],
-    //         'sections' => [
-    //             'class' => SectionsFixture::class,
-    //         ],
-    //     ];
-    // }
-
+    
+    private GeneratorService $generatorService;
+    private string $templatesDir;
+    
     protected function _before()
     {
-//        $templatePath = Craft::$app->getPath()->getSiteTemplatesPath();
-        // $templatePrefix = Module::$config['scaffold']['templatePrefix'];
-        // $partsKitDir = Module::$config['partsKit']['directory'];
-//        $this->siteTemplatesPath = $templatePath;
-        // $this->partialsRoot = $this->siteTemplatesPath . '/_partials'; // TODO - config?
-        // $this->templatesRoot = $this->siteTemplatesPath . '/_elements'; // TODO - config?
-        // $this->partsKitRoot = $this->siteTemplatesPath . '/' . $partsKitDir;
+        $this->generatorService = Module::getInstance()->getGenerator();
+        $this->generatorService->saveSections = false;
+        $this->templatesDir = Craft::$app->path->getSiteTemplatesPath();
     }
-
-//    protected function _after()
-//    {
-//        FileHelper::removeDirectory($this->siteTemplatesPath);
-//    }
-
+    
+    protected function _after()
+    {
+        FileHelper::clearDirectory($this->templatesDir, [
+            'except' => ['.gitkeep'],
+        ]);
+    }
+    
     /**
      * @throws InvalidConfigException
      */
@@ -53,19 +40,7 @@ class GenerateControllerTest extends ConsoleTest
         ])
             ->exitCode(ExitCode::OK)
             ->run();
-
-        $section = Craft::$app->getSections()->getSectionByHandle('test');
         
-        $this->assertNotNull($section);
-        
-        // $this->assertFileExists($this->partialsRoot . '/foo.html');
-        // $this->assertFileExists($this->partsKitRoot . '/foo/default.html');
-
-        // $partsKitContent = file_get_contents($this->partsKitRoot . '/foo/default.html');
-
-        // $this->assertStringContainsString(
-        //     '_partials/foo',
-        //     $partsKitContent
-        // );
+        $this->assertFileExists($this->templatesDir . '/_elements/test.twig');
     }
 }

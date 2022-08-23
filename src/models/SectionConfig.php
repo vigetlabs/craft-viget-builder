@@ -7,10 +7,10 @@ class SectionConfig
     public function __construct(
         public string  $name,
         public string  $type, // Technically an enum
-        public ?string $handle,
-        public ?string $uriFormat,
-        public string  $templatePath,
-        public bool    $template = true,
+        public array   $siteIds,
+        public ?string $handle = null,
+        public ?string $uriFormat = null,
+        public bool    $hasUrls = true,
     )
     {
     }
