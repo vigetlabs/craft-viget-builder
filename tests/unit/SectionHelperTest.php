@@ -17,7 +17,7 @@ class SectionHelperTest extends Unit
      * @var UnitTester
      */
     protected $tester;
-    
+
     // tests
     public function testGenerateSingle()
     {
@@ -45,7 +45,7 @@ class SectionHelperTest extends Unit
             ])
         );
     }
-    
+
     public function testGenerateChannel()
     {
         $this->assertEquals(
@@ -72,7 +72,7 @@ class SectionHelperTest extends Unit
             ])
         );
     }
-    
+
     public function testGenerateStructure()
     {
         $this->assertEquals(
@@ -99,7 +99,7 @@ class SectionHelperTest extends Unit
             ),
         );
     }
-    
+
     public function testHasUriFalse()
     {
         $result = SectionHelper::createSection(
@@ -110,9 +110,9 @@ class SectionHelperTest extends Unit
                 hasUrls: false,
             )
         );
-        
+
         $siteSettings = array_values($result->siteSettings)[0];
-        
+
         $this->assertEquals(
             [
                 'uriFormat' => null,
@@ -124,6 +124,42 @@ class SectionHelperTest extends Unit
                 'uriFormat' => $siteSettings->uriFormat,
                 'template' => $siteSettings->template,
             ],
+        );
+    }
+
+    public function testCustomHandle()
+    {
+        $result = SectionHelper::createSection(
+            new SectionConfig(
+                name: 'Test',
+                handle: 'customHandle',
+                type: Section::TYPE_CHANNEL,
+                siteIds: [1],
+            )
+        );
+
+        $this->assertEquals(
+            'customHandle',
+            $result->handle,
+        );
+    }
+
+    public function testCustomUriFormat()
+    {
+        $result = SectionHelper::createSection(
+            new SectionConfig(
+                name: 'Test',
+                type: Section::TYPE_CHANNEL,
+                siteIds: [1],
+                uriFormat: '/custom-uri-format',
+            )
+        );
+
+        $siteSettings = array_values($result->siteSettings)[0];
+
+        $this->assertEquals(
+            '/custom-uri-format',
+            $siteSettings->uriFormat,
         );
     }
 }

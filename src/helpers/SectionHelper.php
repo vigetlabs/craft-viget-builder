@@ -13,19 +13,17 @@ class SectionHelper
 {
     public static function createSection(SectionConfig $config): Section
     {
-//        $primarySite = Craft::$app->getSites()->getPrimarySite();
-        
         $handle = $config->handle ?? StringHelper::camelCase($config->name);
         $slug = StringHelper::slugify($config->name);
-        
+
         $defaultUriFormat = match ($config->type) {
             Section::TYPE_SINGLE => $slug,
             default => $slug . '/{slug}',
         };
-        
+
         $uriFormat = $config->uriFormat ?? $defaultUriFormat;
         $templatePath = $config->hasUrls ? "_elements/{$slug}.twig" : null;
-        
+
         return new Section([
             'name' => $config->name,
             'handle' => $handle,
