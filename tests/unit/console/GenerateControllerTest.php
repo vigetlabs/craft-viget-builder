@@ -12,24 +12,24 @@ use yii\console\ExitCode;
 
 class GenerateControllerTest extends ConsoleTest
 {
-    
+
     private GeneratorService $generatorService;
     private string $templatesDir;
-    
+
     protected function _before()
     {
         $this->generatorService = Module::getInstance()->getGenerator();
         $this->generatorService->saveSections = false;
         $this->templatesDir = Craft::$app->path->getSiteTemplatesPath();
     }
-    
+
     protected function _after()
     {
         FileHelper::clearDirectory($this->templatesDir, [
-            'except' => ['.gitkeep'],
+            'except' => ['.gitkeep', '.gitignore'],
         ]);
     }
-    
+
     /**
      * @throws InvalidConfigException
      */
@@ -40,7 +40,7 @@ class GenerateControllerTest extends ConsoleTest
         ])
             ->exitCode(ExitCode::OK)
             ->run();
-        
+
         $this->assertFileExists($this->templatesDir . '/_elements/test.twig');
     }
 }
