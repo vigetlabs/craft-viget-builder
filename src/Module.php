@@ -4,7 +4,7 @@ namespace viget\generator;
 
 use Craft;
 use craft\console\Application as CraftConsoleApplication;
-use viget\generator\controllers\GeneratorController;
+use viget\generator\console\controllers\GenerateController;
 use yii\base\BootstrapInterface;
 
 /**
@@ -27,7 +27,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         // manually register our controller paths
         if (Craft::$app instanceof CraftConsoleApplication) {
             Craft::$app->controllerMap['vigenerate'] = [
-                'class' => GeneratorController::class,
+                'class' => GenerateController::class,
             ];
         }
 
