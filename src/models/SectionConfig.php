@@ -1,6 +1,6 @@
 <?php
 
-namespace viget\generator\models;
+namespace viget\builder\models;
 
 class SectionConfig
 {

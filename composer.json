@@ -1,5 +1,5 @@
 {
-    "name": "viget/craft-viget-generator",
+    "name": "viget/craft-viget-builder",
     "description": "Viget Base Module",
     "type": "yii2-extension",
     "version": "0.0.1",
@@ -32,8 +32,8 @@
     },
     "autoload": {
         "psr-4": {
-            "viget\\generator\\": "src/",
-            "vigetgeneratortests\\fixtures\\": "tests/fixtures/"
+            "viget\\builder\\": "src/",
+            "vigetbuildertests\\fixtures\\": "tests/fixtures/"
         }
     },
     "minimum-stability": "dev",
@@ -45,6 +45,6 @@
         }
     },
     "extra": {
-        "bootstrap": "viget\\generator\\Module"
+        "bootstrap": "viget\\builder\\Module"
     }
 }

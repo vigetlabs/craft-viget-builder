@@ -1,6 +1,6 @@
 <?php
 
-namespace vigetgeneratortests\fixtures;
+namespace vigetbuildertests\fixtures;
 
 use craft\test\fixtures\elements\EntryFixture;
 

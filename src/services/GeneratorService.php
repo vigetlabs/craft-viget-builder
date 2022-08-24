@@ -1,15 +1,15 @@
 <?php
 
-namespace viget\generator\services;
+namespace viget\builder\services;
 
 use Craft;
 use craft\models\Site;
 use Exception;
 use Throwable;
-use viget\generator\helpers\GenerateHelper;
-use viget\generator\helpers\SectionHelper;
-use viget\generator\models\GeneratorConfig;
-use viget\generator\models\SectionConfig;
+use viget\builder\helpers\GenerateHelper;
+use viget\builder\helpers\SectionHelper;
+use viget\builder\models\GeneratorConfig;
+use viget\builder\models\SectionConfig;
 use yii\base\BaseObject;
 
 class GeneratorService extends BaseObject

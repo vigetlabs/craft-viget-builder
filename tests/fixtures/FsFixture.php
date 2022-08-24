@@ -5,7 +5,7 @@
  * @license https://craftcms.github.io/license/
  */
 
-namespace vigetgeneratortests\fixtures;
+namespace vigetbuildertests\fixtures;
 
 use Craft;
 use craft\helpers\FileHelper;

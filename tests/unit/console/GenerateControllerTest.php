@@ -5,8 +5,8 @@ namespace vigetbasetests\unit\console;
 use Craft;
 use craft\helpers\FileHelper;
 use craft\test\console\ConsoleTest;
-use viget\generator\Module;
-use viget\generator\services\GeneratorService;
+use viget\builder\Module;
+use viget\builder\services\GeneratorService;
 use yii\base\InvalidConfigException;
 use yii\console\ExitCode;
 

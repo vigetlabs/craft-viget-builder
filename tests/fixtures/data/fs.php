@@ -6,7 +6,7 @@
  */
 
 use craft\fs\Local;
-use vigetgeneratortests\fixtures\FsFixture;
+use vigetbuildertests\fixtures\FsFixture;
 
 return [
     'localFs' => [

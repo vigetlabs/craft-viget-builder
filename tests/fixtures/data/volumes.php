@@ -1,7 +1,7 @@
 <?php
 
 use craft\volumes\Local;
-use vigetgeneratortests\fixtures\VolumesFixture;
+use vigetbuildertests\fixtures\VolumesFixture;
 
 return [
     'testVolume' => [

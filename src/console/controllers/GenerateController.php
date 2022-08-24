@@ -1,35 +1,35 @@
 <?php
 
-namespace viget\generator\console\controllers;
+namespace viget\builder\console\controllers;
 
 use Craft;
 use craft\console\Controller;
 use craft\helpers\FileHelper;
 use craft\models\Section;
 use Exception;
-use viget\generator\models\GeneratorConfig;
-use viget\generator\models\SectionConfig;
-use viget\generator\services\GeneratorService;
+use viget\builder\models\GeneratorConfig;
+use viget\builder\models\SectionConfig;
+use viget\builder\services\GeneratorService;
 use yii\console\ExitCode;
 
 class GenerateController extends Controller
 {
-    
+
     public ?string $uriFormat = null;
     public bool $noTemplate = false;
     private GeneratorConfig $generatorConfig;
-    
+
     public function init(): void
     {
         parent::init();
         $this->generatorConfig = new GeneratorConfig();
     }
-    
+
     public function options($actionID): array
     {
         return ['uriFormat', 'noUrl'];
     }
-    
+
     public function actionSingle(string $name, string $handle = null): int
     {
         $service = new GeneratorService();
@@ -48,7 +48,7 @@ class GenerateController extends Controller
         );
         return ExitCode::OK;
     }
-    
+
     public function actionChannel(string $name, ?string $handle = null): int
     {
         $service = new GeneratorService();

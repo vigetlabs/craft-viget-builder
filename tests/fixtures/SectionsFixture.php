@@ -1,6 +1,6 @@
 <?php
 
-namespace vigetgeneratortests\fixtures;
+namespace vigetbuildertests\fixtures;
 
 use Craft;
 use craft\records\Section;

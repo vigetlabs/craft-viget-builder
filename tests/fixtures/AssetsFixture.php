@@ -1,10 +1,10 @@
 <?php
 
-namespace vigetgeneratortests\fixtures;
+namespace vigetbuildertests\fixtures;
 
 use craft\test\fixtures\elements\AssetFixture;
-use vigetgeneratortests\fixtures\VolumesFixture;
-use vigetgeneratortests\fixtures\VolumesFolderFixture;
+use vigetbuildertests\fixtures\VolumesFixture;
+use vigetbuildertests\fixtures\VolumesFolderFixture;
 
 class AssetsFixture extends AssetFixture
 {

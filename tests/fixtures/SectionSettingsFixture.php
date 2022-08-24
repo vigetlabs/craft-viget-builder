@@ -1,6 +1,6 @@
 <?php
 
-namespace vigetgeneratortests\fixtures;
+namespace vigetbuildertests\fixtures;
 
 use craft\records\Section_SiteSettings;
 use craft\test\ActiveFixture;

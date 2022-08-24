@@ -1,13 +1,13 @@
 <?php
 
-namespace viget\generator\helpers;
+namespace viget\builder\helpers;
 
 use Craft;
 use craft\helpers\StringHelper;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use Illuminate\Support\Collection;
-use viget\generator\models\SectionConfig;
+use viget\builder\models\SectionConfig;
 
 class SectionHelper
 {

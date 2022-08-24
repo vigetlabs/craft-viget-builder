@@ -7,8 +7,8 @@ use Craft;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use UnitTester;
-use viget\generator\helpers\SectionHelper;
-use viget\generator\models\SectionConfig;
+use viget\builder\helpers\SectionHelper;
+use viget\builder\models\SectionConfig;
 use yii\helpers\ArrayHelper;
 
 class SectionHelperTest extends Unit

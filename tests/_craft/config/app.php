@@ -2,11 +2,11 @@
 
 return [
     'modules' => [
-        'viget-generator' => [
-            'class' => \viget\generator\Module::class,
+        'viget-builder' => [
+            'class' => \viget\builder\Module::class,
         ],
     ],
     'bootstrap' => [
-        'viget-generator',
+        'viget-builder',
     ],
 ];
