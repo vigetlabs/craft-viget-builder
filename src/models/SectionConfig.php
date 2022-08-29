@@ -11,6 +11,7 @@ class SectionConfig
         public ?string $handle = null,
         public ?string $uriFormat = null,
         public bool    $hasUrls = true,
+        public bool    $autoSingularizeTemplates = true,
     )
     {
     }

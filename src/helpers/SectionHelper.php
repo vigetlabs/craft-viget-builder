@@ -2,12 +2,12 @@
 
 namespace viget\builder\helpers;
 
-use Craft;
 use craft\helpers\StringHelper;
 use craft\models\Section;
 use craft\models\Section_SiteSettings;
 use Illuminate\Support\Collection;
 use viget\builder\models\SectionConfig;
+use yii\helpers\Inflector;
 
 class SectionHelper
 {
@@ -15,15 +15,18 @@ class SectionHelper
     {
         $handle = $config->handle ?? StringHelper::camelCase($config->name);
         $slug = StringHelper::slugify($config->name);
-
+        
         $defaultUriFormat = match ($config->type) {
             Section::TYPE_SINGLE => $slug,
             default => $slug . '/{slug}',
         };
-
+        
+        $singularizeTemplateName = $config->autoSingularizeTemplates && $config->type !== Section::TYPE_SINGLE;
+        $templateName = $singularizeTemplateName ? Inflector::singularize($slug) : $slug;
+        
         $uriFormat = $config->uriFormat ?? $defaultUriFormat;
-        $templatePath = $config->hasUrls ? "_elements/{$slug}.twig" : null;
-
+        $templatePath = $config->hasUrls ? "_elements/$templateName.twig" : null;
+        
         return new Section([
             'name' => $config->name,
             'handle' => $handle,
