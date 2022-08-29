@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+{% macro code(props) %}
+    <code class="inline-block p-1 bg-slate-100 rounded-md text-xs group-hover:bg-slate-200">
+        {{ props.content }}
+    </code>
+{% endmacro %}
+
+<div class="max-w-screen-lg mx-auto p-10 divide-y">
+    {% for section in sections %}
+        {% for entryType in section.entryTypes %}
+            <details class="">
+                <summary class="p-2 cursor-pointer group hover:bg-slate-100">
+                    <div class="inline-flex flex-wrap align-top pl-1" style="width: calc(100% - 20px)">
+                        <h2 class="font-medium w-1/2 pr-3">
+                            {{ section.name }}
+                            {% if section.entryTypes | length > 1 %}
+                                <span class="text-xs">{{ '- ' ~ entryType.name }}</span>
+                            {% endif %}
+                        </h2>
+                        <div class="flex items-center w-1/2">
+                            <div class="text-xs whitespace-nowrap w-28">
+                                Type:
+                                {{ _self.code({
+                                    content: section.type,
+                                }) }}
+                            </div>
+                            <div class="text-xs">
+                                url:
+                                {{ _self.code({
+                                    content: '/' ~ section.siteSettings.uriFormat | replace('__home__', ''),
+                                }) }}
+                            </div>
+                            <div class="text-xs ml-auto">
+                                {{ tag('a', {
+                                    class: 'text-blue-500 hover:underline',
+                                    href: actionUrl('viget-builder-reports/preview-section', {
+                                        section: section.handle,
+                                        entryType: entryType.handle,
+                                    }),
+                                    text: 'Preview',
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </summary>
+                <div class="p-5">
+                    <h3 class="font-bold mb-1">Fields</h3>
+                    <ul class="text-sm space-y-1">
+                        {% for field in entryType.fields %}
+                            <li>
+                                {{ field.name }} -
+                                {{ _self.code({
+                                    content: field.type,
+                                }) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </details>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+</body>
+</html>
