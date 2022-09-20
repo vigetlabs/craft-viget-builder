@@ -1,0 +1,15 @@
+{% from '%%componentImport%%' import %%componentName%% %}
+
+{% extends '%%partsKitLayout%%' %}
+
+{% block main %}
+
+    <div>
+        <h1>%%componentName%%</h1>
+
+        {{ %%componentName%%({
+            prop: '',
+        }) }}
+    </div>
+
+{% endblock %}

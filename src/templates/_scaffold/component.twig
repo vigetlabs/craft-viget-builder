@@ -1,0 +1,13 @@
+{#
+Props:
+    - key {Type}
+#}
+{% macro %%name%%(props = {}) %}
+    {% set props = {
+        key: props.key ?? null,
+    } %}
+
+    <div>
+
+    </div>
+{% endmacro %}

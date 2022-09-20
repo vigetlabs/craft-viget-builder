@@ -28,6 +28,7 @@ class SectionService extends BaseObject
     {
         parent::init();
         
+        // TODO make this central to the module
         $this->generatorConfig = new GeneratorConfig();
     }
     
@@ -79,7 +80,7 @@ class SectionService extends BaseObject
                 $templateContent = GenerateHelper::renderTemplate(
                     Craft::getAlias('@viget/generator/templates/_scaffold/template.twig'),
                     [
-                        'layout' => $this->generatorConfig->layout,
+                        'layout' => $this->generatorConfig->defaultLayout,
                     ]
                 );
                 
@@ -93,10 +94,5 @@ class SectionService extends BaseObject
             $transaction->rollBack();
             throw $e;
         }
-    }
-    
-    public function createPartial(array $options): void
-    {
-    
     }
 }

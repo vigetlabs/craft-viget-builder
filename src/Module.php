@@ -8,12 +8,14 @@ use craft\events\RegisterTemplateRootsEvent;
 use craft\web\View;
 use viget\builder\console\controllers\GenerateController;
 use viget\builder\controllers\ReportsController;
+use viget\builder\services\ComponentService;
 use viget\builder\services\SectionService;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
 
 /**
  * @property SectionService $sectionService
+ * @property ComponentService $componentService
  */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
@@ -49,6 +51,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         
         $this->setComponents([
             'sectionService' => SectionService::class,
+            'componentService' => ComponentService::class,
         ]);
         
         // Register Module Templates
@@ -66,5 +69,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function getSectionService(): SectionService
     {
         return $this->get('sectionService');
+    }
+    
+    public function getComponentService(): ComponentService
+    {
+        return $this->get('componentService');
     }
 }

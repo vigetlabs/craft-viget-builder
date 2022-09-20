@@ -12,6 +12,7 @@ use RuntimeException;
 use Throwable;
 use viget\builder\models\SectionConfig;
 use viget\builder\Module;
+use viget\builder\services\ComponentService;
 use viget\builder\services\SectionService;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -24,6 +25,7 @@ class GenerateController extends Controller
     public ?string $uriFormat = null;
     public bool $noTemplate = false;
     public SectionService $sectionService;
+    public ComponentService $componentService;
     
     /**
      * @throws InvalidConfigException
@@ -38,6 +40,7 @@ class GenerateController extends Controller
         }
         
         $this->sectionService = $module->getSectionService();
+        $this->componentService = $module->getComponentService();
         
     }
     
@@ -121,6 +124,13 @@ class GenerateController extends Controller
                 hasUrls: $this->noTemplate === false,
             )
         );
+        return ExitCode::OK;
+    }
+    
+    public function actionComponent(string $name): int
+    {
+        $this->componentService->createComponent($name);
+        
         return ExitCode::OK;
     }
 }
